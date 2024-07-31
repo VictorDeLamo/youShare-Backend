@@ -1,0 +1,39 @@
+<div class="container card shadow mt-3" id="<%= dom_id magazine %>">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="d-flex align-items-center">
+        <h2><%= magazine.title %></h2>
+        <% if current_user %>
+          <% if current_user == magazine.user %>
+            <%= link_to edit_magazine_path(magazine), method: :get, class: "btn bi bi-pencil-square ml-2" do %>
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
+
+      <p><%= magazine.name %></p>
+      <p>Propietario: <a href="<%= user_path(magazine.user) %>" class="username-link"><%= magazine.user.username %></a></p>
+      <div class="d-flex align-items-center">
+        <i class="bi bi-people"></i>
+        <span><%= magazine.users.count %></span>
+      </div>
+      <% if current_user %>
+        <% if current_user.suscripciones.exists?(magazine_id: magazine.id) %>
+          <%= button_to "Desuscribirse", suscribir_magazine_path(magazine), method: :delete, class: "btn btn-danger bi bi-folder-x" %>
+        <% else %>
+          <%= button_to "Suscribirse", suscribir_magazine_path(magazine), method: :post, class: "btn btn-primary bi bi-folder-plus" %>
+        <% end %>
+      <% end %>
+    </div>
+    <div class="col-md-6"><!-- Contenedor info revista (about, rules) -->
+      <h2>ABOUT COMMUNITY</h2>
+      <br>
+      <p><%= magazine.description %></p>
+      <br>
+      <h2>REGLAS</h2>
+      <br>
+      <p><%= magazine.rules %></p>
+    </div>
+  </div>
+</div>
+

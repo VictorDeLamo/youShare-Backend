@@ -1,0 +1,5 @@
+<%= render @magazine %>
+<br>
+<% @magazine.hilos.each do |hilo| %>
+  <%= render partial: 'hilos/hilo', locals: { hilo: hilo, user_reactions: @user_reactions } %>
+<% end %>

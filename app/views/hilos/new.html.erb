@@ -1,0 +1,24 @@
+<h1>New Thread</h1>
+
+<div class="wallhilo">
+  <% if @form_type == 'link' %>
+    <%= render "form_link", hilo: @hilo %>
+  <% else %>
+    <%= render "form_hilo", hilo: @hilo %>
+  <% end %>
+</div>
+
+<br>
+<% if notice %>
+<br>
+<div class="hiloitem" id="notice">
+  <span style="<%= 'color: green;' if notice[0] == '1' %> <%= 'color: red;' unless notice[0] == '1' %>">
+    <%= notice[0] == '1' ? notice[1..-1] : notice %>
+  </span>
+</div>
+<% end %>
+<br>
+
+<div>
+  <%= link_to "Back to hilos", hilos_path %>
+</div>

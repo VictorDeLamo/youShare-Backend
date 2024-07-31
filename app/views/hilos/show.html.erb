@@ -1,0 +1,30 @@
+<div class="hilo-container">
+  
+  <%= render 'hilos/hilo', hilo: @hilo, user_reactions: @user_reactions %>
+
+
+  <div class="back-to-hilos">
+    <%= link_to 'Back to hilos', hilos_path %>
+  </div>
+
+  <hr>
+  <div class="comment-form">
+    <% if user_signed_in? %>
+      <h3>New Comment</h3>
+      <%= form_with(model: [ @hilo, @new_comment ], local: true) do |form| %>
+        <div class="field">
+          <%= form.label :content %><br>
+          <%= form.text_area :content %>
+        </div>
+        <div class="actions">
+          <%= form.submit %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+  <%= render 'navbar/commentNavbar' %>
+  <div class="comments-list" id="comments-section">
+  <h3>Comments:</h3>
+  <%= render partial: 'comments/comment', collection: @top_level_comments, as: :comment %>
+</div>
+</div>

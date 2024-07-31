@@ -1,0 +1,13 @@
+<nav class="my-navbar2">
+  <div class="lista">
+    <button onclick="location.href='<%= hilos_path(clean_params.merge(order: 'top')) %>'" class="list-button-navbar2">Top</button>
+    <button onclick="location.href='<%= hilos_path(clean_params.merge(order: 'newest')) %>'" class="list-button-navbar2">Newest</button>
+    <button onclick="location.href='<%= hilos_path(clean_params.merge(order: 'commented')) %>'" class="list-button-navbar2">Commented</button>
+    <button onclick="location.href='<%= hilos_path(clean_params.merge(filter: 'all')) %>'" class="list-button-navbar2">All</button>
+    <button onclick="location.href='<%= hilos_path(clean_params.merge(filter: 'hilos')) %>'" class="list-button-navbar2">Hilos</button>
+    <button onclick="location.href='<%= hilos_path(clean_params.merge(filter: 'links')) %>'" class="list-button-navbar2">Links</button>
+  </div>
+</nav>
+
+
+

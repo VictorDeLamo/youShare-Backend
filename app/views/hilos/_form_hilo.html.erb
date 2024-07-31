@@ -1,0 +1,24 @@
+<%= form_with(model: hilo, local: true, html: { class: 'form-horizontal' }) do |form| %>
+  <%= form.hidden_field :is_link, value: false %>
+
+  <div class="form-group">
+    <%= form.label :title, "Título:", class: 'control-label' %>
+    <%= form.text_area :title, rows: 2, class: 'form-control', id: 'hilo_title' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :content, "Contenido:", class: 'control-label' %>
+    <%= form.text_area :content, rows: 6, class: 'form-control', id: 'hilo_content' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :magazine_id, "Revista:", class: 'control-label' %>
+    <%= form.collection_select :magazine_id, Magazine.all, :id, :name, { include_blank: 'Seleccione una revista...' }, { class: 'form-control select-dropdown', id: 'hilo_magazine_id' } %>
+  </div>
+
+  <br>
+
+  <div class="form-group">
+    <%= form.submit hilo.persisted? ? "Editar" : "Publicar", class: 'btn btn-primary' %>
+  </div>
+<% end %>

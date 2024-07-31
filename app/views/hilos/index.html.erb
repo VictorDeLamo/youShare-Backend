@@ -1,0 +1,12 @@
+<%= stylesheet_link_tag 'navbar2', 'data-turbo-track': 'reload' %>
+<%= render 'navbar/navbar2' %>
+<div id="hilos">
+  <% last_displayed_date = "" %>
+  <% @hilos.each do |hilo| %>
+    <% current_hilo_date = hilo.created_at.strftime("%A, %B %d, %Y") %>
+    <% if last_displayed_date != current_hilo_date %>
+      <h3><%= last_displayed_date = current_hilo_date %></h3>
+    <% end %>
+    <%= render partial: 'hilos/hilo', locals: { hilo: hilo, user_reactions: @user_reactions } %>
+  <% end %>
+</div>

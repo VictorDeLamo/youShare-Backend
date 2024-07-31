@@ -1,0 +1,22 @@
+<!-- app/views/comments/new.html.erb -->
+<div class="container mt-3">
+  <h1>Reply to Comment</h1>
+
+  <%= form_with(model: [@hilo, @comment], local: true, html: { class: 'needs-validation', novalidate: '' }) do |form| %>
+    <% if @comment.parent_id %>
+      <%= form.hidden_field :parent_id, value: @comment.parent_id %>
+    <% end %>
+    <div class="mb-3">
+      <%= form.label :content, class: 'form-label' %>
+      <%= form.text_area :content, class: 'form-control', rows: 3, required: true %>
+      <div class="invalid-feedback">
+        Please provide a comment.
+      </div>
+    </div>
+    <div class="actions">
+      <%= form.submit 'Submit reply', class: 'btn btn-primary' %>
+    </div>
+  <% end %>
+
+  <%= link_to 'Back', hilo_path(@hilo), class: 'btn btn-secondary mt-2' %>
+</div>

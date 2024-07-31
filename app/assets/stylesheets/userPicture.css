@@ -1,0 +1,28 @@
+
+
+.cover-image {
+  width: 100%; /* Mantiene la imagen a lo ancho del contenedor */
+  max-height: 250px; /* Establece la altura máxima de la imagen de portada */
+  object-fit: cover; /* Mantiene la relación de aspecto de la imagen */
+}
+  
+  .avatar-container {
+    /* Adjust this class as necessary */
+    position: absolute;
+    bottom: -75px; /* Adjust this value as needed */
+    left: 7%;
+    
+    transform:  translateY(-50%);
+    
+    z-index: 10; /* Ensure the avatar is above the cover image */
+  }
+  
+  .avatar-image {
+    /* Styles for avatar image */
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover; /* This will ensure that the image covers the area and maintains aspect ratio */
+  }
+  
+  

@@ -1,0 +1,12 @@
+<%- if devise_omniauthable? %>
+  <%= form_for "Google", url: omniauth_authorize_path(:user, 'google_oauth2'), method: :post, data: { turbo: false }, class: "btn btn-link nav-link"  do |f| %>
+    <%= f.button class: "btn btn-link nav-link", type: 'submit' do %>
+      <i class='bi bi-google'></i> Google
+    <% end %>
+  <% end %>
+  <%= form_for "Github", url: omniauth_authorize_path(:user, 'github'), method: :post, data: { turbo: false }, class: "btn btn-link nav-link"  do |f| %>
+    <%= f.button class: "btn btn-link nav-link", type: 'submit' do %>
+      <i class='bi bi-github'></i> Github
+    <% end %>
+  <% end %>
+<% end %>

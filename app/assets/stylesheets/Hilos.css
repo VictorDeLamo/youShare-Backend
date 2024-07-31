@@ -1,0 +1,258 @@
+.hiloitem {
+	 border: 2px solid #dfcaca;
+	 margin: 20px auto;
+	 padding: 1em;
+	 width: 90%;
+	 background-color: white;
+}
+ .hiloitem .likes {
+	 float: left;
+	 width: 95px;
+	 margin-top: 0.2em;
+	 text-align: center;
+}
+ .hiloitem .likes .numlikes {
+	 font-weight: bold;
+	 color: mediumvioletred;
+	 font-size: 1.5em;
+}
+ .hiloitem .likes .smallfont {
+	 font-size: 9pt;
+}
+ .hiloitem .item {
+	 border-left: 2px solid #dfcaca;
+	 margin-left: 115px;
+	 padding-left: 1.1em;
+}
+ .hiloitem .item h4 {
+	 display: block;
+	 margin-block-start: 1.33em;
+	 margin-block-end: 1.80em;
+	 margin-inline-start: 0px;
+	 margin-inline-end: 0px;
+	 font-weight: bold;
+}
+ .hiloitem .item h4 em {
+	 font-style: italic;
+}
+ .hiloitem .destroy {
+	 text-align: center;
+}
+.like-dislike-buttons {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+  }
+  
+  .like-button,
+  .dislike-button {
+	display: flex;
+	align-items: center;
+  }
+  
+  .like-button button,
+  .dislike-button button {
+	background-color: transparent;
+	border: none;
+	cursor: pointer;
+	font-size: 36px;
+	color: #007bff;
+  }
+  
+  .like-button button:hover,
+  .dislike-button button:hover {
+	color: #0056b3;
+  }
+  
+  .num-likes,
+  .num-dislikes {
+	margin-right: 5px;
+	font-weight: bold;
+  }
+  
+  .like-button button::before {
+	content: "\2191"; /* Código Unicode para la flecha hacia arriba */
+  }
+  
+  .dislike-button button::before {
+	content: "\2193"; /* Código Unicode para la flecha hacia abajo */
+  }
+
+  .user-liked .num-likes, .user-liked button::before {
+	color: green; /* Cambia esto según tu preferencia de color para 'like' */
+  }
+  
+  .user-disliked .num-dislikes, .user-disliked button::before {
+	color: red; /* Cambia esto según tu preferencia de color para 'dislike' */
+  }
+  
+  .title-and-url {
+	display: flex;
+	align-items: center; /* this will vertically align the title and the URL */
+	justify-content: space-between; /* this separates the title and the URL */
+	padding-right: 1em; /* Adjust the padding as needed */
+  }
+  
+  .title-and-url h1 {
+	margin-right: 0.5em; /* Adjust the spacing between the title and the URL */
+	font-size: 1em; /* Adjust the size as needed */
+	white-space: nowrap; /* Prevents the text from wrapping */
+  }
+  
+  .url-link {
+	text-decoration: none; /* Removes underline from links */
+	color: #007bff; /* Style your link color as needed */
+	font-size: 0.8em; /* Adjust the size as needed */
+	overflow: hidden; /* Prevents the text from overflowing */
+	text-overflow: ellipsis; /* Adds an ellipsis if the text overflows */
+	max-width: 50%; /* Adjust the width as needed */
+	display: inline-block; /* Allows the use of max-width */
+  }
+
+  .hiloitem .item .title-url {
+	display: flex; /* This will align the title and URL next to each other */
+	align-items: center; /* This will vertically align them in the center */
+  }
+  
+  .hiloitem .item h1 {
+	font-size: 2em; /* Increase font-size as per your preference */
+	margin-right: 10px; /* Adjust spacing between title and URL */
+  }
+  
+  .hilo-url {
+	/* Style for your link if needed */
+	text-decoration: none; /* Example: removes underline from links */
+	font-size: 1em; /* You can adjust this as needed */
+	color: #007bff; /* Link color */
+  }
+  .inline-form {
+	display: inline;
+  }
+
+  .hilo-container {
+	width: 90%; /* Ajusta esto para que coincida con el ancho de .hiloitem */
+	margin: 20px auto; /* Centra el contenedor */
+	padding: 1em;
+	background-color: white;
+  }
+  
+/* Estilos para los comentarios y el formulario de comentarios */
+.comment-form, .comments-list {
+	width: calc(100% - 2.2em); /* Ajusta el ancho al de .hiloitem */
+	margin-left: auto; /* Para centrar */
+	margin-right: auto; /* Para centrar */
+  }
+  
+  .comment-form {
+	padding: 1em; /* Añade padding si es necesario */
+	border: 2px solid #dfcaca; /* Opcional: añade un borde si lo deseas */
+	margin-top: 20px; /* Espacio después del hilo */
+	margin-bottom: 20px; /* Espacio antes de los comentarios */
+  }
+
+  .comment-form textarea {
+	width: 100%; /* Esto hará que el textarea ocupe todo el ancho del contenedor padre */
+	height: 150px; /* Ajusta la altura al valor deseado */
+	padding: 0.5em; /* Espacio dentro del textarea */
+	box-sizing: border-box; /* Asegura que el padding y border estén incluidos en el ancho y altura */
+  }
+  
+  .comments-list {
+	margin-bottom: 20px; /* Espacio después de la lista de comentarios */
+  }
+  
+  .comment {
+	padding: 10px 0; /* Espaciado arriba y abajo de cada comentario */
+	border-bottom: 1px solid #ccc; /* Una línea debajo de cada comentario */
+  }
+  
+  /* Asegúrate de que los botones estén alineados con el .hiloitem */
+  .comment-reply {
+	margin-left: 20px;
+  }
+
+  .actions {
+	display: flex;
+	align-items: center; /* Alinea verticalmente los elementos del contenedor */
+	justify-content: start; /* Alinea los elementos al inicio del contenedor */
+	flex-wrap: nowrap; /* Evita que los elementos se apilen verticalmente */
+	column-gap: 1rem; /* Espacio entre columnas */
+  }
+
+  .comments-link {
+	color: inherit;        /* El color será el mismo que el del texto circundante */
+	text-decoration: none; /* Elimina el subrayado */
+  }
+
+  .comments-link:hover {
+	color: #0056b3; /* Cambia al color que prefieras cuando el cursor esté sobre el enlace */
+  }
+
+  .delete-form {
+	margin-left: 20px; /* Ajusta el margen según lo necesites */
+  }
+
+  .username-link {
+	color: inherit;  /* Hereda el color del elemento padre */
+	text-decoration: none;  /* Elimina el subrayado */
+  }
+  
+  .hilo-actions {
+	margin-left: 20px;
+	display: flex;
+	align-items: center; /* Alinea verticalmente los elementos del contenedor */
+	justify-content: start; /* Alinea los elementos al inicio del contenedor */
+	flex-wrap: nowrap; /* Evita que los elementos se apilen verticalmente */
+	column-gap: 1rem; /* Espacio entre columnas */
+  }
+
+   
+  .boost {
+	margin-left: 30px;
+	display: flex;
+	align-items: center; /* Alinea verticalmente los elementos del contenedor */
+	justify-content: start; /* Alinea los elementos al inicio del contenedor */
+	flex-wrap: nowrap; /* Evita que los elementos se apilen verticalmente */
+	column-gap: 1rem; /* Espacio entre columnas */
+  }
+   
+  .comments-count {
+	margin-left: 20px; /* Añade un poco de margen a la izquierda si es necesario */
+	display: flex;
+	align-items: center; /* Alinea verticalmente los elementos del contenedor */
+	justify-content: start; /* Alinea los elementos al inicio del contenedor */
+	flex-wrap: nowrap; /* Evita que los elementos se apilen verticalmente */
+	column-gap: 1rem; /* Espacio entre columnas */
+  }
+  
+  .edit-hilo-link, .destroy-hilo-button {
+	margin: 0 0.5em; /* Ajusta los márgenes como sea necesario */
+  }
+
+  .edit-hilo-link {
+	color: inherit;        /* El color será el mismo que el del texto circundante */
+	text-decoration: none; /* Elimina el subrayado */
+	cursor: pointer; 
+  }
+
+  .username-link, .magazine-link, .hilo-title {
+	color: inherit;  /* Hereda el color del elemento padre */
+	text-decoration: none;  /* Elimina el subrayado */
+	font-weight: bold;
+  }
+
+  .custom-btn-info {
+	display: inline-block;
+	padding: 0.375rem 0.75rem;
+	font-size: 1rem;
+	line-height: 1.5;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: middle;
+	border: 1px solid #17a2b8;
+	border-radius: 0.25rem;
+	color: #fff;
+	background-color: #17a2b8;
+	border-color: #17a2b8;
+  }
+  

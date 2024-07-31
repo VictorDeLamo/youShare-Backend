@@ -1,0 +1,16 @@
+<h1>Editing Hilo</h1>
+
+<div class="wallhilo">
+  <% if @hilo_type == 'link' %>
+    <%= render "form_link", hilo: @hilo %>
+  <% else %>
+    <%= render "form_hilo", hilo: @hilo %>
+  <% end %>
+</div>
+
+<br>
+
+<div>
+  <%= link_to "Show this hilo", @hilo %> |
+  <%= link_to "Back to hilos", hilos_path %>
+</div>

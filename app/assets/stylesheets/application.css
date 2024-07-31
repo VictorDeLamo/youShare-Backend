@@ -1,0 +1,75 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS (and SCSS, if configured) file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ *= require userPicture
+ */
+ html {
+  display: block;
+}
+
+body {
+    font-family: Arial,Helvetica,sans-serif;
+    color: #444444;
+    background-color: #fef7f7;
+    font-size: 12pt;
+}
+
+h1 {
+  color: #660000;
+  text-align: center;
+}
+
+h3 {
+  font-weight: normal;
+  display: block;
+  font-size: 1.17em;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+}
+
+.wallhilo {
+    color: #4d5e9b;
+    margin: auto;
+    border: 1px dashed #660000;
+    padding-left: 20px;
+    padding-top: 20px;
+    background-color: white;
+    width: 90%;
+}
+
+.flash {
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.flash.notice {
+  color: #155724;
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+}
+
+.flash.alert {
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+}
+.input-group-append {
+  background-color: #5f4575;
+ 
+}

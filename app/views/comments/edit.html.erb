@@ -1,0 +1,22 @@
+<h1 class="mb-4 text-center">Editing Comment</h1> <!-- Título centrado con margen -->
+
+<div class="container mt-5"> <!-- Contenedor centrado con margen superior -->
+  <%= form_with model: @comment, local: true, html: { class: 'card p-3 shadow-sm' } do |form| %>
+    <!-- Card de Bootstrap con padding y sombra suave -->
+    
+    <div class="mb-3">
+      <%= form.label :content, class: 'form-label' %><!-- Etiqueta con estilo de Bootstrap -->
+      <%= form.text_area :content, rows: 3, class: 'form-control' %><!-- Área de texto con estilo de Bootstrap -->
+    </div>
+
+    <div class="actions text-center">
+      <%= form.submit "Update Comment", class: "btn btn-primary mt-2" %><!-- Botón con estilo de Bootstrap -->
+    </div>
+  <% end %>
+</div>
+
+<br>
+
+<div class="text-center mb-5"> <!-- Div centrado con margen inferior -->
+  <%= link_to "Back to Hilo", hilo_path(@comment.hilo), class: "btn btn-secondary" %><!-- Enlace con estilo de botón secundario de Bootstrap -->
+</div>

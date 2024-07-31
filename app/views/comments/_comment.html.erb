@@ -1,0 +1,54 @@
+<!-- app/views/comments/_comment.html.erb -->
+<div class="comment-container" style="display: flex; justify-content: space-between; align-items: center;">
+<% unless defined?(render_replies) %>
+  <div class="comment mb-3" style="margin-left: <%= 20 * (comment.depth || 0) %>px;">
+<% else %>
+  <div class="comment mb-3" style="margin-left: 0;">
+<% end %>
+    <div>
+      <strong><%= link_to comment.user.username, user_path(comment.user), class: "username-link" %>,</strong>
+      <small><%= time_since_creation(comment) %></small>
+    </div>
+
+    <p><%= comment.content %></p>
+
+    <div class="comment-actions d-flex">
+      <%= link_to 'Reply', new_hilo_comment_path(comment.hilo, parent_id: comment.id), class: 'btn btn-outline-secondary btn-sm', style: 'margin-right: 10px;' %>
+      <% if current_user %>
+        <% if comment.comment_reactions.exists?(user_id: current_user.id, status: 'boost') %>
+          <%= button_to 'Boosted', boost_comment_path(comment), method: :post, class: 'btn btn-success bi bi-bookmark-heart' %>
+        <% else %>
+          <%= button_to 'Boost', boost_comment_path(comment), method: :post, class: 'btn btn-secondary bi bi-bookmark' %>
+        <% end %>
+      <% else %>
+        <span class="custom-btn-info">Boost</span>
+      <% end %>
+      (<%= comment.boosts_count %>)
+      <% if user_signed_in? && comment.user == current_user %>
+        <%= form_with url: hilo_comment_path(comment.hilo, comment), method: :delete, local: true, html: { class: 'delete-form' } do |form| %>
+          <%= link_to 'Edit', edit_comment_path(comment), class: 'edit-hilo-link bi bi-pencil-square' %> |
+          <%= form.submit "Delete", method: :delete, class: 'btn btn-outline-danger btn-sm' %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="likes">
+    <div class="like-dislike-buttons">
+      <span class="like-button <%= 'user-liked' if @comment_reactions[comment.id] == 'like' %>">
+        <span class="num-likes"><%= comment.likes %></span>
+        <%= button_to '', like_comment_path(comment), method: :post, class: "like-button" %>
+      </span>
+      <span class="dislike-button <%= 'user-disliked' if @comment_reactions[comment.id] == 'dislike' %>">
+        <span class="num-dislikes"><%= comment.dislikes %></span>
+        <%= button_to '', dislike_comment_path(comment), method: :post, class: "dislike-button" %>
+      </span>
+    </div>
+  </div>
+</div>
+
+<% unless defined?(render_replies) %>
+  <% comment.replies.each do |reply| %>
+    <%= render 'comments/comment', comment: reply %>
+  <% end %>
+<% end %>

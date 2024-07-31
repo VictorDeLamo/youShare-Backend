@@ -1,0 +1,28 @@
+
+<div class="row justify-content-md-center">
+  <div class="col-sm-4"> 
+    <%= form_tag(search_path, method: "get", class: "form-inline") do %>
+      <div class="input-group">
+        <%= text_field_tag :query, params[:query], class: "form-control", placeholder: "Search hilos..." %>
+        <div class="input-group-append">
+          <button type="submit" class="btn btn my-2 my-sm-0">
+              <i class="bi bi-search text-white"></i>
+          </button>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+
+
+<% if @hilos && params[:query] %>
+
+  <% query = params[:query].downcase %>
+  <% @hilos.each do |hilo| %>
+    <% if hilo.content && hilo.content.downcase.include?(query) || hilo.title && hilo.title.downcase.include?(query) %>
+         <%= render partial: 'hilos/hilo', locals: { hilo: hilo, user_reactions: @user_reactions } %>
+    <% end %>
+  <% end %>
+<% end %>
+

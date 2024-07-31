@@ -1,0 +1,62 @@
+<h1 class="display-4">Lista de Revistas</h1>
+
+<div class="table-responsive"> 
+  <table class="table table-striped table-bordered">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">
+          <span>Nombre</span>
+          <%= link_to({ sort: "title", direction: (params[:sort] == "title" && params[:direction] == "asc") ? "desc" : "asc" }) do %>
+            <i class="bi <%= (params[:sort] == "title" && params[:direction] == "asc") ? "bi-arrow-down" : "bi-arrow-up" %>"></i>
+          <% end %>
+        </th>
+        <th scope="col">
+          <span>Hilos</span>
+          <%= link_to({ sort: "hilos", direction: (params[:sort] == "hilos" && params[:direction] == "asc") ? "desc" : "asc" }) do %>
+            <i class="bi <%= (params[:sort] == "hilos" && params[:direction] == "asc") ? "bi-arrow-down" : "bi-arrow-up" %>"></i>
+          <% end %>
+        </th>
+        <th scope="col">
+          <span>Comentarios</span>
+          <%= link_to({ sort: "comments", direction: (params[:sort] == "comments" && params[:direction] == "asc") ? "desc" : "asc" }) do %>
+            <i class="bi <%= (params[:sort] == "comments" && params[:direction] == "asc") ? "bi-arrow-down" : "bi-arrow-up" %>"></i>
+          <% end %>
+        </th>
+        <th scope="col">
+          <span>Publicaciones</span>
+          <%= link_to({ sort: "publicaciones", direction: (params[:sort] == "publicaciones" && params[:direction] == "asc") ? "desc" : "asc" }) do %>
+            <i class="bi <%= (params[:sort] == "publicaciones" && params[:direction] == "asc") ? "bi-arrow-down" : "bi-arrow-up" %>"></i>
+          <% end %>
+        </th>
+        <th scope="col">
+          <span>Suscripciones</span>
+          <%= link_to({ sort: "suscriptores", direction: (params[:sort] == "suscriptores" && params[:direction] == "asc") ? "desc" : "asc" }) do %>
+            <i class="bi <%= (params[:sort] == "suscriptores" && params[:direction] == "asc") ? "bi-arrow-down" : "bi-arrow-up" %>"></i>
+          <% end %>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @magazines.each do |magazine| %>
+        <tr>
+          <td><%= link_to magazine.title, magazine, class: 'username-link' %></td>
+          <td><%= magazine.hilos.where(url: [nil, '']).count %></td>
+          <td><%= total_comentarios_magazine(magazine) %></td>
+          <td><%= magazine.hilos.count %></td>
+          <td>
+              <i class="bi bi-people"></i>
+              <span><%= magazine.users.count %></span>
+              <% if current_user %>
+                <% if current_user.suscripciones.exists?(magazine_id: magazine.id) %>
+                  <%= button_to "Desuscribirse", suscribir_magazine_path(magazine), method: :delete, class: "btn btn-danger bi bi-folder-x" %>
+                <% else %>
+                  <%= button_to "Suscribirse", suscribir_magazine_path(magazine), method: :post, class: "btn btn-primary bi bi-folder-plus"%>
+                <% end %>
+              <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+

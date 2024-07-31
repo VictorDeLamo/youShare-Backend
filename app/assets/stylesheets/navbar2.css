@@ -1,0 +1,27 @@
+.my-navbar2 {
+    background-color: #c8a7e6;
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-columns:1fr 1fr 1fr;
+    align-items: center;
+  }
+
+  .list-elem-navbar2 {
+    font-size: 16px;
+    color: black;
+    padding: 10px;
+    text-decoration: none;
+  }
+
+  .list-button-navbar2{
+    min-width: 60px;
+    background-color:  #c8a7e6;
+    border: none;
+    height: 100%;
+  }
+
+  .list-button-navbar2:hover {
+    border-bottom: 2px solid rgb(0, 0, 0);
+    
+}

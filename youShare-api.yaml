@@ -1,0 +1,1579 @@
+openapi: 3.0.2
+info:
+  version: 1.0.0
+  title: youShare
+  description: ""
+servers:
+  - url: 'https://youshareapp-04149a34a24e.herokuapp.com/'
+paths:
+  /magazines:
+    get:
+      tags:
+      - magazines
+      summary: Retrieves all the magazines
+      operationId: getAllMagazines
+      parameters:
+        - name: direction
+          in: query
+          description: Sort direction
+          required: false
+          schema:
+            type: string
+            enum: [asc, desc]
+        - name: sort
+          in: query
+          description: Sort by field
+          required: false
+          schema:
+            type: string
+            enum: [title, hilos, comments, suscriptores]
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Magazine'
+    post:
+      tags:
+      - magazines
+      summary: Adds a new Magazine to youShare
+      operationId: addMagazine
+      requestBody:
+        description: Provide the name, the title, the description & the rules of the new Magazine
+        content:
+          application/json:
+            schema:
+              required:
+              - name
+              - title
+              - description
+              - rules
+              type: object
+              properties:
+                magazine: 
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      maxLength: 25
+                      example: '@prueba0'
+                    title:
+                      type: string
+                      maxLength: 50
+                      example: 'Prueba0'
+                    description:
+                      type: string
+                      maxLength: 10000
+                      example: 'Descripcion del contenido de la revista'
+                    rules:
+                      type: string
+                      maxLength: 10000
+                      example: 'reglas que deben cumplir la comunidad'
+        required: true
+      responses:
+        201:
+          description: Magazine created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewMagazine'
+        400:
+          description: 'Error: Bad Request'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error400'
+        401:
+          description: 'No Content ApiKey'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error401'
+        403:
+          description: 'ApiKey is incorrect'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error403'
+      security:
+      - ApiKeyAuth: []
+  /magazines/{magazineId}:
+    get:
+      tags:
+      - magazine
+      summary: Finds a Magazine by its ID
+      description: Returns a single Magazine
+      operationId: getMagazineById
+      parameters:
+      - name: magazineId
+        in: path
+        description: ID of Magazine to return
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Magazine'
+        404:
+          description: 'No content Magazine with id={magazineId}'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error404'
+    put:
+      tags:
+      - magazine
+      summary: If the Magazine exists, update it if the token is present and valid.
+      operationId: updateMagazine
+      parameters:
+      - name: magazineId
+        in: path
+        description: Magazine id to update
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: Provide the name, the title, the description & the rules of the new Magazine
+        content:
+          application/json:
+            schema:
+              required:
+              - name
+              - title
+              - description
+              - rules
+              type: object
+              properties:
+                magazine: 
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      maxLength: 25
+                      example: '@prueba0'
+                    title:
+                      type: string
+                      maxLength: 50
+                      example: 'Prueba0'
+                    description:
+                      type: string
+                      maxLength: 10000
+                      example: 'Descripcion del contenido de la revista'
+                    rules:
+                      type: string
+                      maxLength: 10000
+                      example: 'reglas que deben cumplir la comunidad'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewMagazine'
+        404:
+          description: 'Error: Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error404'
+        401:
+          description: 'Error: Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error401'
+        403:
+          description: 'Error: Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error403'
+      security:
+      - ApiKeyAuth: []
+    delete:
+      tags:
+      - magazine
+      summary: If the Magazine exists, deletes it if the token is present and valid. If it does not exist, returns 204 No Content.
+      operationId: deleteMagazine
+      parameters:
+      - name: magazineId
+        in: path
+        description: Magazine id to delete
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Magazine'
+        204:
+          description: No content
+          content:
+            application/json: {}
+        401:
+          description: 'Error: Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error401'
+        403:
+          description: 'Error: Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error403'
+      security:
+      - ApiKeyAuth: []
+  /magazines/{magazineId}/suscribir:
+    post:
+      tags:
+      - magazine
+      summary: Suscribir a Magazine
+      operationId: suscribirMagazine
+      parameters:
+      - name: magazineId
+        in: path
+        description: Magazine id to suscribir
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Suscribir Magazine
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Magazine'
+        404:
+          description: 'Error: Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error404'
+      security:
+      - ApiKeyAuth: []
+    delete:
+      tags:
+      - magazine
+      summary: Desuscribir a Magazine
+      operationId: desuscribirMagazine
+      parameters:
+      - name: magazineId
+        in: path
+        description: Magazine id to desuscribir
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Desuscribir Magazine
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Magazine'
+        404:
+          description: 'Error: Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error404'
+      security:
+      - ApiKeyAuth: []
+  /magazines/{magazineId}/hilos:
+    get:
+      tags:
+      - magazine
+      summary: Finds Hilos to a Magazine by its ID
+      description: Returns a array of Hilos
+      operationId: getHilosToMagazineById
+      parameters:
+      - name: magazineId
+        in: path
+        description: ID of Magazine to return
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Hilo'
+        404:
+          description: 'Error: Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error404'
+  /search:
+    get:
+      tags:
+      - hilos
+      summary: Retrieves all the hilos
+      operationId: getAllHilos
+      parameters:
+      - name: query
+        in: query
+        description: Filter hilos by type (text)
+        required: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Hilo'
+  /hilos:
+    get:
+      tags:
+      - hilos
+      summary: Retrieves all the hilos
+      operationId: getAllHilos
+      parameters:
+      - name: filter
+        in: query
+        description: Filter hilos by type (links, hilos)
+        required: false
+        schema:
+          type: string
+          enum: [links, hilos]
+      - name: order
+        in: query
+        description: Order hilos by specified criteria
+        required: false
+        schema:
+          type: string
+          enum: [top, newest, commented]
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Hilo'
+    post:
+      tags:
+      - hilos
+      summary: Adds a new Hilo
+      operationId: addHilo
+      requestBody:
+        description: Provide the title, content, URL, and magazine ID of the new Hilo
+        content:
+          application/json:
+            schema:
+              required:
+              - title
+              - content
+              - magazine_id
+              type: object
+              properties:
+                hilo:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                      maxLength: 100
+                      example: 'Nuevo Hilo'
+                    content:
+                      type: string
+                      maxLength: 10000
+                      example: 'Contenido del nuevo hilo'
+                    url:
+                      type: string
+                      maxLength: 255
+                      example: 'https://example.com'
+                    magazine_id:
+                      type: integer
+                      example: 1
+        required: true
+      responses:
+        201:
+          description: Hilo created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewHilo'
+        400:
+          description: 'Error: Bad Request'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error400'
+        401:
+          description: 'No Content ApiKey'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error401'
+        403:
+          description: 'ApiKey is incorrect'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error403'
+      security:
+      - ApiKeyAuth: []
+  /hilos/{hiloId}:
+    get:
+      tags:
+      - hilos
+      summary: Finds a Hilo by its ID
+      description: Returns a single Hilo
+      operationId: getHiloById
+      parameters:
+      - name: hiloId
+        in: path
+        description: ID of Hilo to return
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: comments_order
+        in: query
+        description: Order comments by specified criteria
+        required: false
+        schema:
+          type: string
+          enum: [top, newest, older]
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Hilo'
+        404:
+          description: 'No content Hilo with id={hiloId}'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error404'
+    put:
+      tags:
+      - hilos
+      summary: If the Hilo exists, update it if the token is present and valid.
+      operationId: updateHilo
+      parameters:
+      - name: hiloId
+        in: path
+        description: Hilo id to update
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: Provide the title, content, URL, and magazine ID of the Hilo
+        content:
+          application/json:
+            schema:
+              required:
+              - title
+              - content
+              - magazine_id
+              type: object
+              properties:
+                hilo:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                      maxLength: 100
+                      example: 'Nuevo Hilo'
+                    content:
+                      type: string
+                      maxLength: 10000
+                      example: 'Contenido del nuevo hilo'
+                    url:
+                      type: string
+                      maxLength: 255
+                      example: 'https://example.com'
+                    magazine_id:
+                      type: integer
+                      example: 1
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Hilo'
+        404:
+          description: 'Error: Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error404'
+        401:
+          description: 'Error: Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error401'
+        403:
+          description: 'Error: Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error403'
+      security:
+      - ApiKeyAuth: []
+    delete:
+      tags:
+      - hilos
+      summary: If the Hilo exists, deletes it if the token is present and valid. If it does not exist, returns 204 No Content.
+      operationId: deleteHilo
+      parameters:
+      - name: hiloId
+        in: path
+        description: Hilo id to delete
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Hilo'
+        204:
+          description: No content
+          content:
+            application/json: {}
+        401:
+          description: 'Error: Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error401'
+        403:
+          description: 'Error: Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error403'
+      security:
+      - ApiKeyAuth: []
+  /hilos/{hiloId}/like:
+    post:
+      tags:
+      - hilos
+      summary: Likes a Hilo
+      operationId: likeHilo
+      parameters:
+      - name: hiloId
+        in: path
+        description: Hilo id to like
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Liked Hilo.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Like Added"
+        401:
+          description: 'Error: Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error401'
+        404:
+          description: 'Error: Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error404'
+      security:
+      - ApiKeyAuth: []
+  /hilos/{hiloId}/dislike:
+    post:
+      tags:
+      - hilos
+      summary: Dislikes a Hilo
+      operationId: dislikeHilo
+      parameters:
+      - name: hiloId
+        in: path
+        description: Hilo id to dislike
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Disliked Hilo.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Dislike Removed"
+        401:
+          description: 'Error: Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error401'
+        404:
+          description: 'Error: Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error404'
+      security:
+      - ApiKeyAuth: []
+  /hilos/{hiloId}/boost:
+    post:
+      tags:
+      - hilos
+      summary: Boosts a Hilo
+      operationId: boostHilo
+      parameters:
+      - name: hiloId
+        in: path
+        description: Hilo id to boost
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Boosted Hilo.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Hilo Boosted"
+        401:
+          description: 'Error: Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error401'
+        404:
+          description: 'Error: Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error404'
+      security:
+      - ApiKeyAuth: []
+  /hilos/{hiloId}/comments:
+    post:
+      tags:
+      - comments
+      summary: Adds a new comment to the parent hilo/comment
+      operationId: addComment
+      parameters:
+      - name: hiloId
+        in: path
+        description: ID of Hilo to which the comment will be added
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: Provide the content of the new comment, and optionally an ID of the parent comment, if replying to a comment.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - content
+              properties:
+                content:
+                  type: string
+                  maxLength: 10000
+                  example: 'This is a new comment.'
+                parent_id:
+                  type: integer
+                  description: ID of the parent comment, if replying to a comment.
+                  example: 123
+        required: true
+      responses:
+        201:
+          description: Comment was successfully created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewComment'
+        400:
+          description: 'Error: Bad Request'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error400'
+        401:
+          description: 'Error: Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error401'
+        403:
+          description: 'Error: Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error403'
+      security:
+      - ApiKeyAuth: []
+  /hilos/{hiloId}/comments/{commentId}:
+    put:
+      tags:
+      - comments
+      summary: If the comment exists, update it if the token is present and valid returning 200 OK with message.
+      operationId: updateComment
+      parameters:
+      - name: hiloId
+        in: path
+        description: ID of the Hilo which contains the comment
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: commentId
+        in: path
+        description: Comment ID to update
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: Provide the new content of the comment.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - content
+              properties:
+                content:
+                  type: string
+                  maxLength: 10000
+                  example: 'Updated comment content here.'
+      responses:
+        200:
+          description: Comment was successfully updated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Comment was successfully updated."
+        400:
+          description: 'Error: Bad Request'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error400'
+        401:
+          description: 'Error: Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error401'
+        403:
+          description: 'Error: Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error403'
+        404:
+          description: 'Error: Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error404'
+      security:
+      - ApiKeyAuth: []
+    delete:
+      tags:
+      - comments
+      summary: Deletes the specified comment if the token is present and valid. Returns 200 OK with a message.
+      operationId: deleteComment
+      parameters:
+      - name: hiloId
+        in: path
+        description: ID of the Hilo which contains the comment to delete
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: commentId
+        in: path
+        description: Comment ID to delete
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Comment was successfully deleted.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Comment was successfully deleted."
+        401:
+          description: 'Error: Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error401'
+        403:
+          description: 'Error: Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error403'
+        404:
+          description: 'Error: Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error404'
+      security:
+      - ApiKeyAuth: []
+  /hilos/{hiloId}/comments/{commentId}/like:
+    post:
+      tags:
+      - comments
+      summary: Likes a Comment
+      operationId: likeComment
+      parameters:
+      - name: hiloId
+        in: path
+        description: ID of the Hilo which contains the comment
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: commentId
+        in: path
+        description: Comment id to like
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Liked Comment.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Like Added"
+        401:
+          description: 'Error: Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error401'
+        404:
+          description: 'Error: Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error404'
+      security:
+      - ApiKeyAuth: []
+  /hilos/{hiloId}/comments/{commentId}/dislike:
+    post:
+      tags:
+      - comments
+      summary: Dislikes a Comment
+      operationId: dislikeComment
+      parameters:
+      - name: hiloId
+        in: path
+        description: ID of the Hilo which contains the comment
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: commentId
+        in: path
+        description: Comment id to dislike
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Disliked Comment.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Dislike Removed"
+        401:
+          description: 'Error: Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error401'
+        404:
+          description: 'Error: Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error404'
+      security:
+      - ApiKeyAuth: []
+  /hilos/{hiloId}/comments/{commentId}/boost:
+    post:
+      tags:
+      - comments
+      summary: Boosts a Comment
+      operationId: boostComment
+      parameters:
+      - name: hiloId
+        in: path
+        description: ID of the Hilo which contains the comment
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: commentId
+        in: path
+        description: Comment id to boost
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Boosted Comment.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Comment Boosted"
+        401:
+          description: 'Error: Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error401'
+        404:
+          description: 'Error: Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error404'
+      security:
+      - ApiKeyAuth: []
+  /users/{userId}:
+    get:
+      tags:
+      - user
+      summary: Finds a user by its ID
+      description: ID of a user to return
+      operationId: getUserId
+      parameters:
+      - name: userId
+        in: path
+        description: Id of a user to return 
+        required: true
+        schema: 
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+    put:
+      tags:
+      - user
+      summary: Edits a user by its ID
+      description: ID of a user to return
+      operationId: EditUserId
+      parameters:
+      - name: userId
+        in: path
+        description: Id of a user to return 
+        required: true
+        schema: 
+          type: integer
+          format: int64
+      requestBody:
+        description: Provide the new content of the user.
+        content:
+          application/json:
+            schema:
+              required:
+              - username
+              - email
+              - description
+              type: object
+              properties:
+                username:
+                  type: string
+                  maxLength: 10000
+                  example: 'Updated username here.'
+                email:
+                  type: string
+                  maxLength: 10000
+                  example: '@example'   
+                description:
+                  type: string
+                  maxLength: 10000
+                  example: 'Updated description content here.'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        404:
+          description: 'Error: Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error404'
+        401:
+          description: 'Error: Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error401'
+        403:
+          description: 'Error: Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error403'
+      security:
+      - ApiKeyAuth: []
+  /users/{userId}/hilos:
+    get:
+      tags:
+      - user
+      summary: Finds a Users Hilos by its ID
+      description: Hilos of a User to return
+      operationId: getUserIdHilos
+      parameters:
+      - name: userId
+        in: path
+        description: Id of a user to return 
+        required: true
+        schema: 
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserHilo'
+ 
+  /users/{userId}/comments:
+    get:
+      tags:
+      - user
+      summary: Finds a Users Comments by its ID
+      description: Comments of a User to return
+      operationId: getUserIdComments
+      parameters:
+      - name: userId
+        in: path
+        description: Id of a user to return 
+        required: true
+        schema: 
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+
+  /users/{userId}/boosts:
+    get:
+      tags:
+      - user
+      summary: Finds a Users Boosts by its ID
+      description: Comments of a User to return
+      operationId: getUserIdBoosts
+      parameters:
+      - name: userId
+        in: path
+        description: Id of a user to return 
+        required: true
+        schema: 
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserBoost'
+      security:
+      - ApiKeyAuth: []
+components:
+  schemas:
+    Magazine:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          maxLength: 25
+          example: '@prueba0'
+        title:
+          type: string
+          maxLength: 50
+          example: 'Prueba0'
+        description:
+          type: string
+          maxLength: 10000
+          example: 'Descripcion del contenido de la revista'
+        rules:
+          type: string
+          maxLength: 10000
+          example: 'reglas que deben cumplir la comunidad'
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    NewMagazine:
+      allOf:
+        - $ref: '#/components/schemas/Magazine'
+        - type: object
+          properties:
+            url:
+              type: string
+              example: 'https://youshareapp-04149a34a24e.herokuapp.com/magazines/6.json'
+          required:
+            - token
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        username:
+          type: string
+          example: 'userProva'
+        email:
+         type: string
+         example: 'example@gmail.com'
+        description:
+          type: string
+          example: 'Descripcio de un usuario'
+        cover_url:
+          type: string
+        avatar_url:
+          type: string
+        created_at: 
+          type: string
+          format: date-time
+        updated_at: 
+          type: string
+          format: date-time
+    UserHilo:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        title:
+          type: string
+          example: 'Prova'
+        content:
+         type: string
+         example: 'Prova'
+        created_at: 
+          type: string
+          format: date-time
+        updated_at: 
+          type: string
+          format: date-time
+        likes:
+          type: integer
+          format: int64
+          example: 1
+        url:
+          type: string
+        dislikes:
+          type: integer
+          format: int64
+          example: 1
+        magazine_id:
+          type: integer
+          format: int64
+          example: 1
+        user_id:
+          type: integer
+          format: int64
+          example: 1
+        boosts_count:
+          type: integer
+          format: int64
+          example: 1
+    UserBoost:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        user_id:
+          type: integer
+          format: int64
+          example: 1
+        hilo_id:
+         type: integer
+         format: int64
+         example: 1
+        created_at: 
+          type: string
+          format: date-time
+        updated_at: 
+          type: string
+          format: date-time
+
+    Comment:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        user_id:
+          type: integer
+          format: int64
+          example: 1
+        hilo_id:
+          type: integer
+          format: int64
+          example: 1
+        parent_id:
+          type: integer
+          format: int64
+          example: 1
+        content:
+          type: string
+          maxLength: 10000
+          example: 'comment1'
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        likes:
+          type: integer
+          format: int64
+          example: 1
+        dislikes:
+          type: integer
+          format: int64
+          example: 1
+        boosts_count:
+          type: integer
+          format: int64
+          example: 1
+    NewComment:
+      allOf:
+        - $ref: '#/components/schemas/Comment'
+        - type: object
+          properties:
+            token:
+              type: string
+              example: '9656f8894781485f7e9e168584a17ec002ad77379a3e2b3ff4604b916d98c0a7'
+          required:
+            - token
+    Hilo:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        title:
+          type: string
+          maxLength: 100
+          example: 'Nuevo Hilo'
+        content:
+          type: string
+          maxLength: 10000
+          example: 'Contenido del nuevo hilo'
+        url:
+          type: string
+          maxLength: 255
+          example: 'https://example.com'
+        magazine_id:
+          type: integer
+          example: 1
+        user_id:
+          type: integer
+          example: 1
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        likes:
+          type: integer
+          example: 0
+        dislikes:
+          type: integer
+          example: 0
+        comments:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 1
+              content:
+                type: string
+                example: 'comentario del hilo'
+    NewHilo:
+      allOf:
+        - $ref: '#/components/schemas/Hilo'
+        - type: object
+          properties:
+            token:
+              type: string
+              example: '9656f8894781485f7e9e168584a17ec002ad77379a3e2b3ff4604b916d98c0a7'
+          required:
+            - token
+    ErrorResult:
+      type: object
+      properties:
+        message: 
+          type: string
+          example: 'Content is too long (maximum is 280 characters)'
+      required:
+        - message
+  examples:
+    error400:
+      value:
+        message: "Content is too long (maximum is 280 characters)"
+    error401:
+      value:
+        message: "You provided no ApiKey"
+    error403:
+      value:
+        error: "Forbidden"
+    error404:
+      value:
+        error: "Hilo not found"
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      name: ApiKey
+      in: header

@@ -1,0 +1,50 @@
+<!-- Barra de navegación -->
+<nav class="my-navbar1">
+  <div class="logo">youShare</div>
+  
+  <div class="lista">
+    <button class="list-button">
+      <a href="<%= hilos_path %>" class="list-elem">Hilos</a>
+    </button>
+    <button class="list-button">
+      <a href="<%= magazines_path %>" class="list-elem">Revistas</a>
+    </button>
+    
+      <button class="list-button">
+          <a href="<%=search_path%>" class="list-elem"><i class="bi bi-search"></i></a>
+      </button>
+  </div>
+  
+  <div class="dropdown">
+    <button class="dropbtn">+</button>
+    <div class="dropdown-content">
+      <a href="<%= new_hilo_path(type: 'link') %>" class="nav-link">Crear Link</a>
+      <a href="<%= new_hilo_path(type: 'hilo') %>" class="nav-link">Crear Hilo</a>
+      <a href="<%= new_magazine_path %>" class="nav-link">Crear Revista</a>
+      <!-- Más elementos del menú aquí si es necesario -->
+    </div>
+  </div>
+
+  <div class="dropdown">
+    <% if current_user %>
+      <a href="<%= user_path(current_user) %>" class="profile-link">
+      <button class="dropbtn2 bi bi-person-circle">
+        <span class="username"><%= current_user.username %></span>
+      </button>
+      </a>
+      <div class="dropdown-content"> 
+          <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "btn btn-link nav-link" %>
+      </div>
+    <% else %>
+        <button class="dropbtn2 bi bi-person-fill-x">
+          User
+        </button>
+        <div class="dropdown-content">
+          <%= render "devise/shared/links" %>
+        </div>
+    <% end %>
+  </div>
+
+  </div>
+
+</nav>

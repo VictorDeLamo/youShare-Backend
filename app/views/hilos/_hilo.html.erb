@@ -1,0 +1,49 @@
+<div class="hiloitem" id=hilo.id>
+  <div class="likes">
+    <div class="like-dislike-buttons">
+      <span class="like-button <%= 'user-liked' if user_reactions.is_a?(Hash) ? user_reactions[hilo.id] == 'like' : user_reactions == 'like' %> ">
+        <span class="num-likes"><%= hilo.likes %></span>
+          <%= button_to '', like_hilo_path(hilo), method: :post, class: "like-button" %>
+      </span>
+      <span class="dislike-button <%= 'user-disliked' if user_reactions.is_a?(Hash) ? user_reactions[hilo.id] == 'dislike' : user_reactions == 'dislike' %>">
+      <span class="num-dislikes"><%= hilo.dislikes %></span>
+        <%= button_to '', dislike_hilo_path(hilo), method: :post, class: "dislike-button" %>
+      </span>
+    </div>
+  </div>
+  <div class="item">
+    <div class="title-url">
+      <!-- Aquí se hace el cambio para que el título sea un enlace a la página de show -->
+      <h1><%= link_to hilo.title, hilo_path(hilo), class: 'hilo-title' %></h1>
+      <!-- En caso de que el hilo tenga URL, se mantiene el enlace a la URL original -->
+      <% if hilo.respond_to?(:url) && hilo.url.present? %>
+        <a href="<%= hilo.url %>" class="hilo-url">(<%= hilo.url %>)</a>
+      <% end %>
+    </div>
+    <em><%= hilo.content %></em>
+    <p>By <%= link_to hilo.user.username, user_path(hilo.user), class: 'username-link' %>, <%= time_since_creation(hilo) %>, in <%= link_to hilo.magazine.name, magazine_path(hilo.magazine), class: 'magazine-link'%></p>
+  </div>
+  <div class="actions">
+    <div class="boost">
+      <%if current_user%>
+        <% if current_user.boosts.exists?(hilo_id: hilo.id) %>
+          <%= button_to 'Boosted', boost_hilo_path(hilo), method: :post, class: 'btn btn-success bi bi-bookmark-heart' %>
+        <% else %>
+          <%= button_to 'Boost', boost_hilo_path(hilo), method: :post, class: 'btn btn-secondary bi bi-bookmark' %>
+        <% end %>
+      <%else%>
+        <span class="custom-btn-info">Boost</span>
+      <%end%>
+      (<%= hilo.boosts.count %>)
+    </div>
+    <div class="comments-count">
+     <%= link_to pluralize(hilo.comments.count, 'comentario'), hilo_path(hilo, anchor: "comments-section"), class: "comments-link" %>
+    </div>
+    <div class="hilo-actions">
+    <% if user_signed_in? && (hilo.user_id == current_user.id) %>
+      <%= link_to 'Edit', edit_hilo_path(hilo), class: 'edit-hilo-link bi bi-pencil-square' %> |
+      <%= button_to 'Destroy', hilo, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger bi bi-trash' %>
+    <% end %>
+    </div>
+  </div>
+</div>
